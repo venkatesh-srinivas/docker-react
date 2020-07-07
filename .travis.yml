@@ -2,10 +2,22 @@ sudo: required
 services:
   - docker  
 
-  
+
 before_install:
   - docker build -t venkatesh/docker-react -f Dockerfile.dev .
 
 script:
   - docker run venkatesh/docker-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "ap-south-1"
+  app: "docker"
+  env: "Docker-env"
+  bucket_name: "elasticbeanstalk-ap-south-1-515222663508"
+  bucket_path: "docker"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY"
 
